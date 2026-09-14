@@ -1,0 +1,41 @@
+# =============================================================================
+# find-subs configuration
+#
+# Point `paths` at the folder(s) that hold your movies. find-subs traverses each
+# one RECURSIVELY (movies in sub-folders are handled too) and downloads subtitles
+# next to every video it finds.
+#
+# Precedence (highest wins):  CLI argument  >  environment variable  >  this file
+#                             >  built-in default.
+# So `python find-subs.py "D:\OneOff"` still overrides `paths` below for that run.
+#
+# Windows tip: use forward slashes (D:/Movies) or single-quote backslash paths.
+# =============================================================================
+
+# One or more root folders to scan recursively. Add as many as you like.
+paths:
+  - "D:/Movies"
+  # - "D:/TV Shows"
+  # - "/mnt/media/movies"
+
+# --- Subtitle options (same knobs / defaults as d3l0g3's get-subs.sh) --------
+# Space-separated ISO 639-1 language codes to fetch.
+langs: "en ro"
+
+# Add the RegieLive Romanian provider (only used when "ro" is in langs).
+regielive: true
+
+# When a language has NO exact match, dump all candidate releases into a
+# subfolder next to the video so you can pick one manually.
+alternatives: true
+alternativesSubfolder: "Subs"
+# Tier-1 providers for the alternatives dump (kept to a small, trusted set).
+alternativesProviders: "opensubtitles regielive"
+# Tier-2 providers, tried ONLY if tier 1 found nothing for a video.
+alternativesProvidersFallback: "opensubtitles regielive podnapisi tvsubtitles gestdown addic7ed"
+
+# Transliterate Romanian diacritics in *.ro.* subtitles to plain Latin letters.
+stripRomanianDiacritics: true
+
+# subliminal exact-match minimum score (higher = stricter matching).
+minScore: 60

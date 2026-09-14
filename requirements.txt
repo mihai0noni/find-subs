@@ -1,0 +1,26 @@
+# find-subs Python dependencies
+#
+# Install with:   pip install -r requirements.txt
+#
+# These are the SAME packages the d3l0g3 init hook installs at container boot
+# (subliminal + guessit). Everything else the code imports -- babelfish,
+# requests and beautifulsoup4 (bs4) used by the bundled RegieLive provider --
+# is pulled in transitively as a dependency of `subliminal`, so it does not
+# strictly need to be listed. They are pinned below anyway (commented) in case
+# you want a fully reproducible, offline-resolvable set.
+#
+# NOTE: d3l0g3 pins no version by default (subtitles.subliminalVersion: "" =
+# latest) and targets the subliminal 2.7.x line. The >= floors below match
+# that generation while still allowing patch updates. To reproduce d3l0g3
+# exactly with "latest", drop the version specifiers.
+
+subliminal>=2.7,<3
+guessit>=3.8
+
+# --- Transitive (installed automatically by subliminal; listed for clarity) ---
+# Uncomment to pin them explicitly for a fully reproducible install.
+# babelfish>=0.6
+# requests>=2.31
+# beautifulsoup4>=4.12
+# dogpile.cache>=1.3
+# PyYAML>=6.0            # used to read config.yaml (ships transitively via knowit)

@@ -67,6 +67,10 @@ install-deps.bat             :: Windows (no bash needed)
 python install-deps.py       # any OS with Python 3
 ```
 
+The installer even **bootstraps pip itself** if the target machine doesn't have
+it (via `ensurepip`, falling back to `get-pip.py`) — so you don't have to install
+pip separately.
+
 Handy flags (all three installers accept them):
 
 | Flag           | Effect |
@@ -74,6 +78,7 @@ Handy flags (all three installers accept them):
 | `--user`       | Install into your user site (no admin/root needed) |
 | `--venv`       | Create a local `.venv/` and install into it (isolated) |
 | `--wheels DIR` | **Offline** install from a folder of pre-downloaded wheels |
+| `--index-url URL` | Use a custom package index / mirror |
 
 Prefer doing it by hand instead? That's just:
 
@@ -86,6 +91,31 @@ Then confirm the environment is ready:
 ```
 python check-deps.py
 ```
+
+**Install error `Location '' is ignored` / `Could not find a version that
+satisfies subliminal`?** That means pip is stuck in **offline mode** — almost
+always because your machine has one of these set (common on corporate/locked-down
+boxes):
+
+- `PIP_NO_INDEX=1` (or `--no-index` in a `pip.ini`), or
+- a **blank** `PIP_FIND_LINKS`.
+
+Fix it by clearing them, then re-run the installer:
+
+```bash
+unset PIP_NO_INDEX PIP_FIND_LINKS      # Linux/macOS/Git Bash
+./install-deps.sh
+```
+```bat
+set "PIP_NO_INDEX="                    :: Windows cmd
+set "PIP_FIND_LINKS="
+install-deps.bat
+```
+
+If you *intend* to install offline, do it properly with a wheels folder instead:
+`install-deps.sh --wheels wheels` (see [Deploying](#deploying-to-another-environment)).
+Behind a corporate mirror, point pip at it with `--index-url https://your-mirror/simple`.
+
 
 - **Windows:** to use `find-subs.bat`/`find-subs.sh`, a `bash` (Git Bash or WSL)
   must be on `PATH`. If you don't have bash, use `python find-subs.py` instead —
